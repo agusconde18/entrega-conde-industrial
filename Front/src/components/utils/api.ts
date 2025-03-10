@@ -5,7 +5,7 @@ export const API_URL = {
 }
 
 // Desarrollo
-//export const URL_BASE = "http://192.168.42.1/"
+export const URL_BASE = "http://192.168.0.1/"
 
 // PROD
-export const URL_BASE = ""
+//export const URL_BASE = ""

@@ -1,0 +1,60 @@
+.temperatureCurve {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    button {
+        margin: 5px !important;
+    }
+}
+
+.contaierSideBySide {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%; // Ensure the parent container has a height
+    border: 1px dashed white;
+    hr {
+        height: 200px;
+        border: none;
+        width: 5px;
+        border-right: 1px dashed white;
+        align-self: stretch;
+    }
+
+    @media (max-width: 550px) {
+        flex-direction: column;
+        hr {
+            height: 2px;
+            border: none;
+            width: 100%;
+            border-top: 1px dashed white;
+            align-self: stretch;
+        }
+    }
+}
+
+.leftPanel, .rightPanel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+}
+
+.timeInput {
+    width: 130px;
+    max-width: 30vw;
+}
+
+.temperatureInput {
+    width: 130px;
+    max-width: 30vw;
+}
+
+.containerInputs {
+    // Add any additional styles if needed
+}
+
+.removePoint {
+    margin-top: 30px !important;
+}
