@@ -5,6 +5,10 @@
 #include "constants.h"
 
 #include <Arduino.h>
+#include "hardware/watchdog.h"
+
+// Configuración del watchdog
+#define WDT_TIMEOUT 5000  // Tiempo de espera en milisegundos
 
 
 void actuator();
@@ -354,6 +358,7 @@ void setup1() {
     temp = getTemperature();
 
     delay(2000); // Pause for 2 seconds
+    watchdog_enable(WDT_TIMEOUT, true);  // Inicializar el watchdog con el tiempo de espera
 }
 
 bool led = false;
@@ -362,6 +367,8 @@ long millisLast = 0;
 long countSaveArray = 0;
 
 void loop1() {
+// Reiniciar el watchdog
+  watchdog_update();
   // Print setpoint and temp in OLED Display
     actuator();
 
