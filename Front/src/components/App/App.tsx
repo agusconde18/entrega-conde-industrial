@@ -21,6 +21,7 @@ function App() {
     const [runningCurve, setRunningCurve] = useState<boolean>(false);
     const [errorRunning, setErrorRunning] = useState<boolean>(false);
 
+    const isMandatorioDone = useRef(false);
     const isRunningRef = useRef(isRunning);
     const offsetRun = useRef(0);
     const startTimeRef = useRef(startTime);
@@ -46,6 +47,7 @@ function App() {
 
     useEffect(() => {
         if (isRunning && !runningCurve && currentTemp !== undefined && currentTemp >= 38 && currentTemp <= 55) {
+            isMandatorioDone.current = false;
             setRunningCurve(true);
             setStartTime(Date.now());
             startCurveProcess();
@@ -72,18 +74,20 @@ function App() {
         }
 
         if (currentPoint && nextPoint && maxTime > elapsedTime) {
-            if(mandatorio && currentPoint.temperature > (currentTempRef.current ?? 0)) {
+            if(mandatorio && !isMandatorioDone.current && currentPoint.temperature > (currentTempRef.current ?? 0)) {
                 offsetRun.current++;
+            } else if (mandatorio) {
+                isMandatorioDone.current = true;
             }
             const timeDiff = nextPoint.time - currentPoint.time;
             const tempDiff = nextPoint.temperature - currentPoint.temperature;
-            let newTemp = currentPoint.temperature + (tempDiff / timeDiff) * ((elapsedTime) - currentPoint.time) - (mandatorio ? -15 : 5);
+            let newTemp = currentPoint.temperature + (tempDiff / timeDiff) * ((elapsedTime) - currentPoint.time) - (mandatorio ? 0 : 5);
             //newTemp = nextPoint.temperature;
             setTargetTemp(newTemp);
             setCurrentTempData(prevData => [...prevData, { time: elapsedTime + offsetRun.current, temperature: Number(currentTempRef.current) }]);
         } else {
             setRunningCurve(false);
-            clearInterval(interval);
+            //clearInterval(interval);
             sendFinalTemperatures();
         }
     }, []);
@@ -135,7 +139,7 @@ function App() {
 
     const series = [
         { connectNulls: true, showMark: false, data: xAxisUnique[0].data.map(time => currentTempData.find(point => point.time === time)?.temperature ?? null), label: 'Temperatura Actual' },
-        { connectNulls: true, showMark: false, data: xAxisUnique[0].data.map(time => curveData.find(point => point.time === time)?.temperature ?? null), label: 'Curva Definida' }
+        { connectNulls: true, showMark: true, data: xAxisUnique[0].data.map(time => curveData.find(point => point.time === time)?.temperature ?? null), label: 'Curva Definida' }
     ];
 
     return (

@@ -5,16 +5,16 @@ import styles from './styles.module.scss';
 
 const predefinedCurves: { [key: string]: { [key: string]: { time: number, temperature: number, mandatory?: boolean }[] } } = {
     low: {
-        con: [{ time: 0, temperature: 40 }, { time: 60, temperature: 100 }, { time: 120, temperature: 130 }, { time: 150, temperature: 200, mandatory: true }, { time: 210, temperature: 170 }, { time: 400, temperature: 0 }],
-        sin: [{ time: 0, temperature: 40 }, { time: 60, temperature: 100 }, { time: 120, temperature: 120 }, { time: 150, temperature: 180, mandatory: true }, { time: 210, temperature: 150 }, { time: 400, temperature: 0 }]
+        con: [{ time: 0, temperature: 40 }, { time: 60, temperature: 100 }, { time: 120, temperature: 130 }, { time: 150, temperature: 200, mandatory: true }, { time: 210, temperature: 170 }, { time: 700, temperature: 0 }],
+        sin: [{ time: 0, temperature: 40 }, { time: 60, temperature: 100 }, { time: 120, temperature: 120 }, { time: 150, temperature: 180, mandatory: true }, { time: 210, temperature: 150 }, { time: 700, temperature: 0 }]
     },
     medium: {
-        con: [{ time: 0, temperature: 40 }, { time: 60, temperature: 130 }, { time: 120, temperature: 170 }, { time: 150, temperature: 230, mandatory: true }, { time: 210, temperature: 180 }, { time: 400, temperature: 0 }],
-        sin: [{ time: 0, temperature: 40 }, { time: 60, temperature: 130 }, { time: 120, temperature: 180 }, { time: 150, temperature: 240, mandatory: true }, { time: 210, temperature: 240 }, { time: 400, temperature: 0 }]
+        con: [{ time: 0, temperature: 40 }, { time: 60, temperature: 130 }, { time: 120, temperature: 170 }, { time: 150, temperature: 230, mandatory: true }, { time: 210, temperature: 180 }, { time: 700, temperature: 0 }],
+        sin: [{ time: 0, temperature: 40 }, { time: 60, temperature: 130 }, { time: 120, temperature: 180 }, { time: 150, temperature: 240, mandatory: true }, { time: 210, temperature: 240 }, { time: 700, temperature: 0 }]
     },
     high: {
-        con: [{ time: 0, temperature: 40 }, { time: 60, temperature: 130 }, { time: 120, temperature: 190 }, { time: 150, temperature: 270, mandatory: true }, { time: 210, temperature: 250 }, { time: 400, temperature: 0 }],
-        sin: [{ time: 0, temperature: 40 }, { time: 60, temperature: 130 }, { time: 120, temperature: 190 }, { time: 150, temperature: 270, mandatory: true }, { time: 210, temperature: 250 }, { time: 400, temperature: 0 }]
+        con: [{ time: 0, temperature: 40 }, { time: 60, temperature: 130 }, { time: 120, temperature: 190 }, { time: 150, temperature: 270, mandatory: true }, { time: 210, temperature: 250 }, { time: 700, temperature: 0 }],
+        sin: [{ time: 0, temperature: 40 }, { time: 60, temperature: 130 }, { time: 120, temperature: 190 }, { time: 150, temperature: 270, mandatory: true }, { time: 210, temperature: 250 }, { time: 700, temperature: 0 }]
     }
 };
 
