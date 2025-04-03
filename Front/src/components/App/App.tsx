@@ -58,7 +58,7 @@ function App() {
             setTargetTemp(1);
             clearInterval(interval);
         }
-        const adelantoCalculo = 6;
+        const adelantoCalculo = 4;
 
         const elapsedTime = ((Date.now() - (startTimeRef.current ?? Date.now())) / 1000) - offsetRun.current + adelantoCalculo  ; // tiempo transcurrido en segundos
         const maxTime = curveDataRef.current[curveDataRef.current.length - 1].time + offsetRun.current + 120;
@@ -86,7 +86,7 @@ function App() {
             //clearInterval(interval);
             sendFinalTemperatures();
         }
-        setCurrentTempData(prevData => [...prevData, { time: elapsedTime + offsetRun.current, temperature: Number(currentTempRef.current) }]);
+        setCurrentTempData(prevData => [...prevData, { time: elapsedTime - adelantoCalculo + offsetRun.current, temperature: Number(currentTempRef.current) }]);
     }, []);
 
     const startCurveProcess = () => {
