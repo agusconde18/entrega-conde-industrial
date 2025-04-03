@@ -107,7 +107,8 @@ void handleSetPoint() {
 
 void handleGetActualTemp() {
   addCORSHeaders();
-  server.send(200, "application/json", "{\"temp\":" + String(temp) + "}");
+  String local = String(temp); 
+  server.send(200, "application/json", "{\"temp\":" + local + "}");
    server.client().stop();
 }
 
@@ -135,7 +136,7 @@ void liveGraphGet() {
 /****************************************************************************CORE 0 FUN**************************************************/
 void loop() {
   server.handleClient();
-  delay(1);
+  delay(50);
 }
 
 
