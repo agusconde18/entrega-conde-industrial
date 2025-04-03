@@ -45,7 +45,7 @@ function App() {
     }, [isRunning, refetchTemp]);
 
     useEffect(() => {
-        if (isRunning && !runningCurve && currentTemp !== undefined && currentTemp >= 39 && currentTemp <= 42) {
+        if (isRunning && !runningCurve && currentTemp !== undefined && currentTemp >= 38 && currentTemp <= 55) {
             setRunningCurve(true);
             setStartTime(Date.now());
             startCurveProcess();
@@ -58,35 +58,34 @@ function App() {
             setTargetTemp(1);
             clearInterval(interval);
         }
-        const adelantoCalculo = 6;
 
-        const elapsedTime = ((Date.now() - (startTimeRef.current ?? Date.now())) / 1000) - offsetRun.current + adelantoCalculo  ; // tiempo transcurrido en segundos
-        const maxTime = curveDataRef.current[curveDataRef.current.length - 1].time + offsetRun.current + 120;
+        const elapsedTime = ((Date.now() - (startTimeRef.current ?? Date.now())) / 1000) - offsetRun.current  ; // tiempo transcurrido en segundos
+        const maxTime = curveDataRef.current[curveDataRef.current.length - 1].time;
         // se suma 6 ya que 6 segundos es el estimado que teemos que tarda en reaccionar la celda
-        const currentPoint = curveDataRef.current.reverse().find(point => point.time <= elapsedTime);
+        const currentPoint = curveDataRef.current.reverse().find(point => point.time <= elapsedTime + 6);
         const mandatorio = currentPoint?.mandatory;
         const nextPoint = curveDataRef.current.reverse().find(point => point.time > (currentPoint?.time ?? Number.MAX_VALUE)) ?? { temperature: 0, time: Number.MAX_VALUE };
-        if(offsetRun.current > 140) {
+        if(offsetRun.current > 120) {
             setErrorRunning(true);
             clearInterval(interval);
             stopAllWithoutClose();
         }
 
-        if (currentPoint && nextPoint && maxTime > (elapsedTime - adelantoCalculo)) {
+        if (currentPoint && nextPoint && maxTime > elapsedTime) {
             if(mandatorio && currentPoint.temperature > (currentTempRef.current ?? 0)) {
                 offsetRun.current++;
             }
             const timeDiff = nextPoint.time - currentPoint.time;
             const tempDiff = nextPoint.temperature - currentPoint.temperature;
-            let newTemp = currentPoint.temperature + (tempDiff / timeDiff) * ((elapsedTime) - currentPoint.time);
+            let newTemp = currentPoint.temperature + (tempDiff / timeDiff) * ((elapsedTime) - currentPoint.time) - (mandatorio ? -15 : 5);
             //newTemp = nextPoint.temperature;
             setTargetTemp(newTemp);
+            setCurrentTempData(prevData => [...prevData, { time: elapsedTime + offsetRun.current, temperature: Number(currentTempRef.current) }]);
         } else {
             setRunningCurve(false);
-            //clearInterval(interval);
+            clearInterval(interval);
             sendFinalTemperatures();
         }
-        setCurrentTempData(prevData => [...prevData, { time: elapsedTime + offsetRun.current, temperature: Number(currentTempRef.current) }]);
     }, []);
 
     const startCurveProcess = () => {
@@ -96,8 +95,9 @@ function App() {
     const sendFinalTemperatures = () => {
         let count = 0;
         const interval = setInterval(() => {
-            if (count < 5) {
+            if (count < 15) {
                 setTargetTemp(0);
+                setCurrentTempData(prevData => [...prevData, { time: prevData.length, temperature: 0 }]);
                 count++;
             } else {
                 clearInterval(interval);
